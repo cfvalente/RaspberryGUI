@@ -1,0 +1,22 @@
+Dependencias:
+bash windows
+xserver
+gtkmm
+
+sudo apt-get install libgtkmm-3.0-dev
+sudo apt-get install at-spi2-core
+
+C/C++: `pkg-config --cflags gtkmm-3.0` 
+Linker: `pkg-config --libs gtkmm-3.0` 
+
+
+IntelliSense: Include
+
+C:\Users\caiof\AppData\Local\lxss\rootfs\usr\include\gtkmm-3.0
+C:\Users\caiof\AppData\Local\lxss\rootfs\usr\include\glibmm-2.4
+C:\Users\caiof\AppData\Local\lxss\rootfs\usr\include\giomm-2.4
+
+
+Make:
+
+g++ -std=c++11 main.cpp -o exe `pkg-config gtkmm-3.0 --cflags --libs` -l wiringPi
