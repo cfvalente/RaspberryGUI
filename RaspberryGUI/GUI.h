@@ -14,6 +14,8 @@ protected:
 	void OnRelayButtonClicked();
 
 	//Member widgets:
+	Gtk::Grid *Grid;
+	Gtk::Label *Title;
 	Gtk::Button *RelayButton;
 	//Gtk::Button m_button; // Usando lista de construtores
 

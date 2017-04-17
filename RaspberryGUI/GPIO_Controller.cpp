@@ -4,7 +4,6 @@
 
 GPIO_Controller::GPIO_Controller()
 {
-	wiringPiSetupGpio();
 }
 
 
@@ -14,7 +13,8 @@ GPIO_Controller::~GPIO_Controller()
 
 void GPIO_Controller::ToggleRelay()
 {
-	digitalWrite(RelayPin, 1 - digitalRead(RelayPin));
+	int CurrentValue = digitalRead(RelayPin);
+	digitalWrite(RelayPin, 1 - CurrentValue);
 	return;
 }
 
