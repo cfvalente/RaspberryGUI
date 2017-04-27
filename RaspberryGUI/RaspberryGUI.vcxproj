@@ -34,7 +34,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <SourcePath>$(SourcePath)</SourcePath>
-    <IncludePath>C:\Users\caiof\AppData\Local\lxss\rootfs\usr\include\gtkmm-3.0;C:\Users\caiof\AppData\Local\lxss\rootfs\usr\include\glibmm-2.4;C:\Users\caiof\AppData\Local\lxss\rootfs\usr\include\giomm-2.4;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\caiof\AppData\Local\lxss\rootfs\usr\include\gtkmm-3.0;C:\Users\caiof\AppData\Local\lxss\rootfs\usr\include\glibmm-2.4;C:\Users\caiof\AppData\Local\lxss\rootfs\usr\include\giomm-2.4;C:\Users\caiof\AppData\Local\lxss\rootfs\usr\include\gdkmm-3.0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <Link>
@@ -75,7 +75,7 @@
     <ClCompile />
     <ClCompile />
     <Link>
-      <AdditionalOptions>`pkg-config --libs gtkmm-3.0` %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>`pkg-config --libs gtkmm-3.0` -lpthread %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <ClCompile>
       <AdditionalOptions>`pkg-config --cflags gtkmm-3.0` %(AdditionalOptions)</AdditionalOptions>

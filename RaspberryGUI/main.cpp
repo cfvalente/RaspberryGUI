@@ -1,8 +1,6 @@
 #include "GUI.h"
 #include <wiringPi.h>
 
-
-
 int main(int argc, char *argv[])
 {
 	wiringPiSetupGpio();
