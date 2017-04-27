@@ -1,11 +1,12 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <mutex>
 
 #include "GUI.h"
 
 bool GUI::Active = false;
+std::vector<double> GUI::SensorOutput;
+std::mutex GUI::SensorMutex;
 
 
 
@@ -37,11 +38,12 @@ GUI::GUI()
 	Grid->show_all();
 
 	//sigc::slot<bool> Slot = sigc::bind(sigc::mem_fun(*this, &GUI::UpdateLabel), 1000);
-	//Glib::signal_timeout().connect(sigc::mem_fun<void>(*this, &GUI::UpdateLabel), 1000);
+	Glib::signal_timeout().connect(sigc::mem_fun(*this, &GUI::UpdateLabel), 1000);
 	//Glib::signal_timeout().bind(sigc::mem_fun(*this, &GUI::UpdateLabel), 1000);
 	//sigc::connection  Glib::SignalIdle::connect(const sigc::slot<bool>& slot, int priority = Glib::PRIORITY_DEFAULT_IDLE);
 
-	SensorThread = std::thread(GUI::T_UpdateSensorData, 0, SensorData, RaspberryGPIO);
+
+	SensorThread = std::thread(GUI::T_UpdateSensorData, 0, RaspberryGPIO);
 }
 
 
@@ -72,26 +74,29 @@ char * GUI::GenerateRelayLabelText(int RelayVal)
 	return (char *)"Activate Relay";
 }
 
-void GUI::T_UpdateSensorData(int Channel, Gtk::Label *Output, GPIO_Controller RaspberryGPIO)
+void GUI::T_UpdateSensorData(int Channel, GPIO_Controller RaspberryGPIO)
 {
 	Active = true;
-	std::vector<double> SensorOutput;
 	while (Active)
 	{
+		SensorMutex.lock();
 		SensorOutput = RaspberryGPIO.ReadAnalogData(Channel);
-		double Val = SensorOutput[Channel];
-
-		std::ostringstream strs;
-		strs.precision(6);
-		strs << Val << "V\n";
-		std::string str = strs.str();
-
-		//Output->set_label(str);
-
+		SensorMutex.unlock();
+		delay(10);
 	}
 }
 
-void GUI::UpdateLabel()
+bool GUI::UpdateLabel()
 {
-	SensorData->set_label("HUE");
+	SensorMutex.lock();
+	double Val = SensorOutput[0];
+
+	std::ostringstream strs;
+	strs.precision(6);
+	strs << Val << "V\n";
+	std::string str = strs.str();
+
+	SensorData->set_label(str);
+	SensorMutex.unlock();
+	return true;
 }

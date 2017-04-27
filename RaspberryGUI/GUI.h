@@ -3,6 +3,7 @@
 #include "GPIO_Controller.h"
 #include <thread>
 #include <vector>
+#include <mutex>
 
 class GUI : public Gtk::Window
 {
@@ -24,10 +25,12 @@ protected:
 
 private:
 	char *GenerateRelayLabelText(int RelayVal);
-	static bool Active;
-	std::thread SensorThread;
 
-	static void T_UpdateSensorData(int Channel, Gtk::Label *Output, GPIO_Controller RaspberryGPIO);
-	void UpdateLabel();
+	std::thread SensorThread;
+	static bool Active;
+	static std::mutex SensorMutex;
+	static std::vector<double> SensorOutput;
+	static void T_UpdateSensorData(int Channel, GPIO_Controller RaspberryGPIO);
+	bool UpdateLabel();
 };
 
